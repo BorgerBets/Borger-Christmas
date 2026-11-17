@@ -38,56 +38,307 @@
 <body class="pb-20">
 
   <!-- Header -->
-  <header class="pt-10 pb-6 px-4 text-center max-w-xl mx-auto">
+  <header class="pt-8 pb-6 px-4 text-center max-w-xl mx-auto">
     <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-200 text-xs font-semibold tracking-wide uppercase mb-3">
-      <span>🇦🇺 Aussie Summer Christmas • 25 Dec 2026</span>
+      <span>🇦🇺 AUSSIE SUMMER CHRISTMAS • 25 DEC 2026</span>
     </div>
 
     <h1 class="festive-title text-5xl sm:text-6xl font-bold text-amber-300 drop-shadow-md">
       Christmas at the Borger’s 🎄
     </h1>
-    <p class="text-emerald-100/80 mt-2 text-sm sm:text-base">
+    <p class="text-emerald-100/80 mt-2 text-sm">
       Pop your name down and let everyone know what delicious food or cold drinks you're bringing along! Anyone with this link can edit.
     </p>
 
-    <button onclick="copyShareLink()" class="mt-5 w-full py-3 px-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-sm shadow-lg shadow-amber-900/20 transition flex items-center justify-center gap-2 cursor-pointer">
+    <!-- Top Action: Copy Share Link -->
+    <button onclick="copyShareLink()" class="mt-5 w-full py-3.5 px-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-sm shadow-lg shadow-amber-900/20 transition flex items-center justify-center gap-2 cursor-pointer">
       <span>🔗</span> Copy Share Link
     </button>
 
-    <div class="mt-3 inline-flex items-center gap-2 text-xs text-emerald-300/80 font-medium">
+    <div class="mt-3 flex items-center justify-center gap-2 text-xs text-emerald-200/70">
       <span id="sync-status" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
       <span>Live & Synced • Anyone can edit</span>
     </div>
   </header>
 
   <!-- Main Container -->
-  <main class="max-w-xl mx-auto px-4 space-y-6">
+  <main class="max-w-xl mx-auto px-4 space-y-5">
 
-    <!-- Event Details Card -->
-    <section class="glass-card rounded-2xl p-5 border-amber-500/20">
+    <!-- Event Details & Host Notes Card -->
+    <section class="glass-card rounded-2xl p-5">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-xs font-bold uppercase tracking-wider text-amber-300">📅 Event Details & Host Notes</h2>
-        <button onclick="toggleNotesEdit()" class="text-xs px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white transition">
+        <button id="edit-notes-btn" onclick="toggleNotesEdit()" class="text-xs px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white transition">
           Edit Details
         </button>
       </div>
+
       <div id="notes-display" class="space-y-3 text-sm text-emerald-50/90">
         <div>
-          <span class="text-xs uppercase tracking-wider text-emerald-300/70 block">Location</span>
-          <span class="font-semibold text-white">The Borger Residence</span>
+          <span class="text-xs uppercase tracking-wider text-amber-200/70 font-semibold block">Location</span>
+          <span class="font-medium text-white">The Borger Residence</span>
         </div>
         <div>
-          <span class="text-xs uppercase tracking-wider text-emerald-300/70 block">Kick-off & Arrival</span>
-          <span class="font-semibold text-white">From 8:30 AM for Breaky • Lunch ~2:00 PM</span>
+          <span class="text-xs uppercase tracking-wider text-amber-200/70 font-semibold block">Kick-off & Arrival</span>
+          <span class="font-medium text-white">From 8:30 AM for Breaky • Lunch ~2:00 PM</span>
         </div>
         <div>
-          <span class="text-xs uppercase tracking-wider text-emerald-300/70 block">Host Notes</span>
-          <span class="font-semibold text-white">Bring swimmers, towels & an esky!</span>
+          <span class="text-xs uppercase tracking-wider text-amber-200/70 font-semibold block">Host Notes</span>
+          <span id="custom-notes-text" class="font-medium text-white">Bring swimmers, towels & an esky!</span>
         </div>
       </div>
+
       <div id="notes-editor" class="hidden space-y-3">
-        <textarea id="notes-input" rows="4" class="w-full rounded-xl bg-black/40 border border-white/20 p-3 text-sm text-white focus:outline-none focus:border-amber-400"></textarea>
-        <div class="flex justify-end gap-2">
+        <div>
+          <label class="text-xs text-amber-200/70 block mb-1">Location</label>
+          <input type="text" id="edit-loc" class="w-full rounded-xl bg-black/30 border border-white/20 p-2.5 text-sm text-white" value="The Borger Residence">
+        </div>
+        <div>
+          <label class="text-xs text-amber-200/70 block mb-1">Kick-off & Arrival</label>
+          <input type="text" id="edit-time" class="w-full rounded-xl bg-black/30 border border-white/20 p-2.5 text-sm text-white" value="From 8:30 AM for Breaky • Lunch ~2:00 PM">
+        </div>
+        <div>
+          <label class="text-xs text-amber-200/70 block mb-1">Host Notes</label>
+          <textarea id="edit-host-notes" rows="2" class="w-full rounded-xl bg-black/30 border border-white/20 p-2.5 text-sm text-white">Bring swimmers, towels & an esky!</textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
           <button onclick="toggleNotesEdit()" class="text-xs px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20">Cancel</button>
           <button onclick="saveNotes()" class="text-xs px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-semibold">Save Details</button>
         </div>
+      </div>
+    </section>
+
+    <!-- Add Item Form -->
+    <section class="glass-card rounded-2xl p-5 border-amber-400/30">
+      <h2 class="text-sm font-bold uppercase tracking-wider text-amber-300 mb-3">🎁 Add What You’re Bringing</h2>
+      <form id="add-form" class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <input type="text" id="person-name" required placeholder="Your Name (e.g. Andrew)" class="rounded-xl bg-black/30 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-amber-400" />
+          <select id="category" class="rounded-xl bg-emerald-950 border border-white/15 px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+            <option value="breaky">🥐 Breaky</option>
+            <option value="drinks">🍻 Drinks</option>
+            <option value="lunch">🍗 Lunch</option>
+          </select>
+        </div>
+        <input type="text" id="item-name" required placeholder="What are you bringing? (e.g. Prawns & Pavlova)" class="w-full rounded-xl bg-black/30 border border-white/15 px-3.5 py-2.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-amber-400" />
+        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 font-bold text-sm text-slate-900 shadow-lg shadow-amber-900/20 transition cursor-pointer">
+          + Add to Christmas List
+        </button>
+      </form>
+    </section>
+
+    <!-- Summary Counters -->
+    <div class="grid grid-cols-3 gap-2.5 text-center">
+      <div class="glass-card rounded-xl p-2.5">
+        <div id="count-breaky" class="text-xl font-bold text-amber-300">0</div>
+        <div class="text-[11px] text-emerald-200/70">Breaky</div>
+      </div>
+      <div class="glass-card rounded-xl p-2.5">
+        <div id="count-drinks" class="text-xl font-bold text-amber-300">0</div>
+        <div class="text-[11px] text-emerald-200/70">Drinks</div>
+      </div>
+      <div class="glass-card rounded-xl p-2.5">
+        <div id="count-lunch" class="text-xl font-bold text-amber-300">0</div>
+        <div class="text-[11px] text-emerald-200/70">Lunch</div>
+      </div>
+    </div>
+
+    <!-- Category Lists -->
+    <div class="space-y-4">
+      <!-- Breaky -->
+      <section class="glass-card rounded-2xl p-4">
+        <h3 class="text-sm font-bold text-amber-300 mb-3 flex items-center gap-2">
+          <span>🥐</span> Breaky List
+        </h3>
+        <ul id="list-breaky" class="space-y-2 text-sm"></ul>
+      </section>
+
+      <!-- Drinks -->
+      <section class="glass-card rounded-2xl p-4">
+        <h3 class="text-sm font-bold text-amber-300 mb-3 flex items-center gap-2">
+          <span>🍻</span> Drinks & Ice List
+        </h3>
+        <ul id="list-drinks" class="space-y-2 text-sm"></ul>
+      </section>
+
+      <!-- Lunch -->
+      <section class="glass-card rounded-2xl p-4">
+        <h3 class="text-sm font-bold text-amber-300 mb-3 flex items-center gap-2">
+          <span>🍗</span> Christmas Lunch List
+        </h3>
+        <ul id="list-lunch" class="space-y-2 text-sm"></ul>
+      </section>
+    </div>
+
+  </main>
+
+  <script>
+    const FIREBASE_DB_URL = "https://borger-christmas-e3168-default-rtdb.firebaseio.com";
+    
+    let currentItems = {};
+    let eventData = {
+      location: "The Borger Residence",
+      time: "From 8:30 AM for Breaky • Lunch ~2:00 PM",
+      notes: "Bring swimmers, towels & an esky!"
+    };
+
+    function copyShareLink() {
+      navigator.clipboard.writeText(window.location.href);
+      alert("🔗 Link copied! Paste it into your family chat.");
+    }
+
+    async function fetchLiveState() {
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/borgerChristmas.json`);
+        const data = await res.json();
+
+        const statusDot = document.getElementById("sync-status");
+        statusDot.classList.remove("bg-amber-400", "bg-red-500");
+        statusDot.classList.add("bg-emerald-400");
+
+        currentItems = (data && data.items) ? data.items : {};
+        if (data && data.eventDetails) {
+          eventData = data.eventDetails;
+        }
+
+        renderAll();
+      } catch (err) {
+        console.error("Sync error:", err);
+        document.getElementById("sync-status").classList.add("bg-red-500");
+      }
+    }
+
+    function renderAll() {
+      if (document.getElementById("notes-editor").classList.contains("hidden")) {
+        document.querySelectorAll("#notes-display span.font-medium")[0].innerText = eventData.location;
+        document.querySelectorAll("#notes-display span.font-medium")[1].innerText = eventData.time;
+        document.getElementById("custom-notes-text").innerText = eventData.notes;
+      }
+
+      const categories = ["breaky", "drinks", "lunch"];
+      categories.forEach(cat => {
+        const ul = document.getElementById(`list-${cat}`);
+        ul.innerHTML = "";
+        const entries = Object.entries(currentItems).filter(([_, item]) => item.category === cat);
+        document.getElementById(`count-${cat}`).innerText = entries.length;
+
+        if (entries.length === 0) {
+          ul.innerHTML = `<li class="text-white/40 italic py-1 text-xs">Nothing listed yet — add the first item above!</li>`;
+          return;
+        }
+
+        entries.forEach(([id, item]) => {
+          const li = document.createElement("li");
+          li.className = "flex items-center justify-between gap-3 bg-black/25 border border-white/10 rounded-xl px-3.5 py-2";
+          li.innerHTML = `
+            <div>
+              <span class="font-semibold text-white">${escapeHtml(item.item)}</span>
+              <span class="text-emerald-300/80 text-xs block sm:inline sm:ml-2">— ${escapeHtml(item.person)}</span>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              <button onclick="editItem('${id}')" class="text-[11px] px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-amber-200 transition">Edit</button>
+              <button onclick="deleteItem('${id}')" class="text-[11px] px-2 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-200 transition">✕</button>
+            </div>
+          `;
+          ul.appendChild(li);
+        });
+      });
+    }
+
+    document.getElementById("add-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const person = document.getElementById("person-name").value.trim();
+      const category = document.getElementById("category").value;
+      const item = document.getElementById("item-name").value.trim();
+      if (!person || !item) return;
+
+      const newEntry = { person, category, item, createdAt: Date.now() };
+      document.getElementById("item-name").value = "";
+
+      await fetch(`${FIREBASE_DB_URL}/borgerChristmas/items.json`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newEntry)
+      });
+      await fetchLiveState();
+    });
+
+    async function editItem(id) {
+      const existing = currentItems[id];
+      if (!existing) return;
+
+      const updatedItem = prompt(`Update item for ${existing.person}:`, existing.item);
+      if (updatedItem === null || updatedItem.trim() === "") return;
+
+      const updatedPerson = prompt("Update person's name:", existing.person);
+      if (updatedPerson === null || updatedPerson.trim() === "") return;
+
+      await fetch(`${FIREBASE_DB_URL}/borgerChristmas/items/${id}.json`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ item: updatedItem.trim(), person: updatedPerson.trim() })
+      });
+      await fetchLiveState();
+    }
+
+    async function deleteItem(id) {
+      if (!confirm("Remove this item?")) return;
+      await fetch(`${FIREBASE_DB_URL}/borgerChristmas/items/${id}.json`, {
+        method: "DELETE"
+      });
+      await fetchLiveState();
+    }
+
+    function toggleNotesEdit() {
+      const display = document.getElementById("notes-display");
+      const editor = document.getElementById("notes-editor");
+
+      if (editor.classList.contains("hidden")) {
+        document.getElementById("edit-loc").value = eventData.location;
+        document.getElementById("edit-time").value = eventData.time;
+        document.getElementById("edit-host-notes").value = eventData.notes;
+        display.classList.add("hidden");
+        editor.classList.remove("hidden");
+      } else {
+        display.classList.remove("hidden");
+        editor.classList.add("hidden");
+      }
+    }
+
+    async function saveNotes() {
+      eventData = {
+        location: document.getElementById("edit-loc").value.trim() || "The Borger Residence",
+        time: document.getElementById("edit-time").value.trim(),
+        notes: document.getElementById("edit-host-notes").value.trim()
+      };
+      toggleNotesEdit();
+      renderAll();
+
+      await fetch(`${FIREBASE_DB_URL}/borgerChristmas/eventDetails.json`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eventData)
+      });
+      await fetchLiveState();
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
+
+    for (let i = 0; i < 15; i++) {
+      const flake = document.createElement("div");
+      flake.className = "snowflake";
+      flake.innerText = "❄";
+      flake.style.left = Math.random() * 100 + "vw";
+      flake.style.fontSize = (Math.random() * 10 + 10) + "px";
+      flake.style.animationDuration = (Math.random() * 8 + 7) + "s";
+      flake.style.animationDelay = (Math.random() * 5) + "s";
+      document.body.appendChild(flake);
+    }
+
+    fetchLiveState();
+    setInterval(fetchLiveState, 3000);
+  </script>
+</body>
+</html>
